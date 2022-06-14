@@ -1,6 +1,6 @@
 {
   "name": "testshop_db",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "data base for shop",
   "main": "app.js",
   "scripts": {
