@@ -1,6 +1,6 @@
 {
-  "dependencies": {
+  "name": "lerna",
+  "devDependencies": {
     "lerna": "^5.1.2"
-  },
-  "name": "lerna"
+  }
 }

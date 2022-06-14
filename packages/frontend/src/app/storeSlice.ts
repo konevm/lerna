@@ -114,18 +114,7 @@ const initialState: IState = {
   cart: [],
   totalPrice: 0,
   customer: InitialCustomer,
-  customers: [
-    {
-      id: "1",
-      login: "test11",
-      name: "Ivan",
-      lastName: "Ivanov",
-      email: "mmm@nnn.xx",
-      password: "fffsfsfsfsfs1F!",
-      address: "Paris",
-      phone: "888888888",
-    },
-  ],
+  customers: [],
   isAuthorized: false,
 };
 
@@ -177,7 +166,6 @@ export const storeSlice = createSlice({
       store.showModal = true;
     });
     builder.addCase(asyncSignInCustomer.fulfilled, (store, action) => {
-      console.log(action.payload);
       store.showModal = false;
       store.isAuthorized = true;
       store.customer = action.payload;

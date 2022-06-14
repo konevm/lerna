@@ -6,17 +6,16 @@ const jwt = require("jsonwebtoken");
 
 const tokenKey = "myNewJWTTokenKey";
 
-// Validate user
+router.get("/", (req, res) => res.send("connected"));
+
 router.get("/authorization", async (req, res) => {
   try {
     const customer = await Customers.findOne({
       login: req.query.login,
     });
     const verify = bcrypt.compareSync(req.query.password, customer.password);
-    console.log(customer);
     if (verify) {
       const token = (customer.token = jwt.sign({ _id: customer._id }, tokenKey));
-
       res.send({ user: customer, token });
     }
   } catch (error) {
@@ -26,12 +25,9 @@ router.get("/authorization", async (req, res) => {
 
 router.post("/registration", async (req, res) => {
   try {
-    console.log(req.body);
     const customer = new Customers(req.body);
-
     customer.password = bcrypt.hashSync(req.body.password, 10);
     customer.token = jwt.sign({ _id: customer._id }, tokenKey);
-    console.log(customer);
     await customer.save();
     res.send(customer);
   } catch (error) {
