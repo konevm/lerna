@@ -1,0 +1,84 @@
+@use "../../styles/variables.scss";
+
+.mainPage_ecoProducts {
+  @include variables.productsAd;
+  background-color: variables.$brown;
+}
+.ecoProducts__image {
+  @include variables.productsImage;
+  background-image: url("../../images/eco.jpg");
+}
+.ecoProducts__info {
+  box-sizing: inherit;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  color: #fff;
+  font-size: 1rem;
+  gap: 1rem;
+  padding: 350px 0 300px;
+}
+.info__name {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 44px;
+  padding-bottom: calc(35px - 1rem);
+}
+.info__link,
+.info__link::after {
+  @include variables.linksZeroed;
+  color: #fff;
+}
+.info__link {
+  padding: 15px 45px;
+  border: 1px solid #fff;
+  margin-top: calc(42px - 1rem);
+  transition: 300ms;
+  &:hover {
+    background-color: #fff;
+    color: variables.$brown;
+  }
+}
+@media screen and (max-width: 550px) {
+  .ecoProducts__image {
+    display: none;
+  }
+  .mainPage_ecoProducts {
+    position: relative;
+    background-image: url("../../images/eco.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .ecoProducts__info {
+    margin: 0;
+    width: 100%;
+    color: rgb(5, 34, 3);
+    font-size: 1.5rem;
+    padding: 100px 50px 50px;
+    z-index: 2;
+    background-color: #cfacad86;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .info__name {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    text-align: center;
+    color: black;
+  }
+  .info__list-item:nth-child(3),
+  .info__list-item:nth-child(5),
+  .info__list-item:nth-child(7) {
+    text-align: right;
+  }
+  .info__link {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: variables.$brown;
+  }
+}

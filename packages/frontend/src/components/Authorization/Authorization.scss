@@ -1,0 +1,47 @@
+@use "../../styles/variables.scss";
+
+.app__authorization {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  gap: 30px;
+  .MuiFormControl-root {
+    width: 300px;
+    height: 76px;
+  }
+  .MuiInputLabel-root.Mui-focused {
+    color: variables.$brown;
+  }
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: variables.$brown;
+    }
+  }
+}
+.MuiFormHelperText-root {
+  max-width: 300px;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.wait {
+  color: #fff;
+  animation-duration: 3s;
+  animation-name: rotate;
+  animation-iteration-count: infinite;
+}
+.MuiSvgIcon-root.wait {
+  width: 30%;
+  height: 30%;
+}

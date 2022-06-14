@@ -1,0 +1,36 @@
+.main__magazines {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 100px;
+  justify-content: center;
+  gap: 30px;
+}
+.magazine {
+  width: 320px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.elle {
+  background-image: url("../../images/elle.png");
+}
+.cosmopolitan {
+  background-image: url("../../images/cosmopolitan2.svg");
+}
+.vogue {
+  background-image: url("../../images/vogue.png");
+}
+.grazia {
+  background-image: url("../../images/grazia.svg");
+}
+.bazaar {
+  background-image: url("../../images/bazaar.png");
+}
+
+@media screen and (max-width: 885px) {
+  .main__magazines {
+    padding: 50px;
+  }
+}

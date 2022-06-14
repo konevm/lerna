@@ -1,0 +1,22 @@
+@use "../../styles/variables.scss";
+
+.app__cart {
+  text-align: center;
+}
+.cart__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 40px;
+}
+.modal__warning {
+  padding: 50px;
+  font-size: 30px;
+  font-weight: 700;
+  background-color: #fff;
+  .modal-warning__link {
+    font-size: 30px;
+    font-weight: 700;
+    color: variables.$brown;
+    cursor: pointer;
+  }
+}

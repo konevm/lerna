@@ -1,0 +1,36 @@
+$sand: #e6e1d6;
+$brown: #cfacad;
+$brownWithOpacity: #cfacad6c;
+$sandWithOpacity: #e6e1d685;
+
+@mixin productsAd {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+}
+@mixin productsImage {
+  box-sizing: inherit;
+  width: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+@mixin linksZeroed {
+  box-sizing: border-box;
+  text-decoration: none;
+  text-align: center;
+}
+@mixin newAndSale {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  top: 65px;
+  left: 15px;
+}

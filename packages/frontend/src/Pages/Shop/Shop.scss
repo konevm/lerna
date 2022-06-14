@@ -1,0 +1,10 @@
+.products__list {
+  padding: 0 40px 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  list-style-type: none;
+  column-gap: 30px;
+  row-gap: 30px;
+  align-content: center;
+  justify-items: center;
+}

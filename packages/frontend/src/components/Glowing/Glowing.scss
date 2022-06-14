@@ -1,0 +1,77 @@
+@use "../../styles/variables.scss";
+
+.mainPage__glowing {
+  @include variables.productsAd;
+}
+.glowing__info {
+  box-sizing: inherit;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  font-size: 1rem;
+  gap: 1rem;
+  padding: 350px 100px;
+  text-align: center;
+}
+.glowing__name {
+  font-size: 30px;
+  color: #b88987;
+}
+.glowing__image {
+  @include variables.productsImage;
+  background-image: url("../../images/glowing.svg");
+}
+.glowing__link,
+.glowing__link::after {
+  @include variables.linksZeroed;
+  color: black;
+}
+.glowing__link {
+  padding: 15px 45px;
+  background-color: variables.$sand;
+  box-sizing: border-box;
+  transition: 300ms;
+  border: 1px solid variables.$sand;
+  &:hover {
+    box-sizing: border-box;
+    background-color: white;
+  }
+}
+@media screen and (max-width: 550px) {
+  .mainPage__glowing {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    margin-bottom: 50px;
+    background-image: url("../../images/glowing.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .glowing__info {
+    width: 100%;
+    padding: 100px 50px 50px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.534);
+  }
+  .glowing__name {
+    font-size: 30px;
+    color: #b88987;
+  }
+  .glowing__image {
+    display: none;
+  }
+  .glowing__link {
+    padding: 15px 45px;
+    background-color: variables.$sand;
+    box-sizing: border-box;
+    transition: 300ms;
+    border: 1px solid variables.$sand;
+    margin-top: 100px;
+    &:hover {
+      box-sizing: border-box;
+      background-color: white;
+    }
+  }
+}

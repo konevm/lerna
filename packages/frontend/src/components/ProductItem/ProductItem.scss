@@ -1,0 +1,61 @@
+@use "../../styles/variables.scss";
+
+.product {
+  width: 320px;
+  position: relative;
+  text-align: center;
+}
+.product__new {
+  @include variables.newAndSale;
+  background-color: variables.$brown;
+  color: #fff;
+}
+.product__sale {
+  @include variables.newAndSale;
+  background-color: variables.$sand;
+}
+.product__sale-new {
+  @include variables.newAndSale;
+  background-color: variables.$sand;
+  top: calc(65px + 55px);
+}
+.product__image {
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 285px;
+}
+.product__name {
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px;
+}
+.product__description {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: variables.$sandWithOpacity;
+  transition: 1000ms;
+  padding: 20px;
+}
+.product__price {
+  padding: 10px;
+  font-size: 12px;
+  line-height: 15px;
+}
+.product__button {
+  margin: 0;
+  padding: 10px 0;
+  outline: none;
+  box-sizing: border-box;
+  background-color: variables.$brown;
+  width: 320px;
+  border: 1px solid variables.$brown;
+  text-transform: capitalize;
+  font-weight: 700;
+  cursor: pointer;
+}
+.unvisible {
+  opacity: 0;
+}

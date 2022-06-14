@@ -1,0 +1,70 @@
+@use "../../styles/variables.scss";
+
+.app__footer {
+  background-color: variables.$brown;
+  justify-self: end;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+}
+.footer__menu-item,
+.footer__menu-item::after,
+span {
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.footer__menu {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+.footer__socials,
+.footer__payments {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 0;
+}
+.footer__socials {
+  margin: 20px 0 40px;
+}
+.socials__icon {
+  cursor: pointer;
+}
+.payments__icon {
+  width: 50px;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 0;
+  background-size: cover;
+}
+@media screen and (max-width: 1024px) {
+  .app__footer {
+    padding: 50px 0;
+  }
+  .footer__socials {
+    margin: 20px 0;
+  }
+  .socials__icon {
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  .footer__payments,
+  .footer__menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .footer__payments {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

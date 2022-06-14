@@ -1,0 +1,25 @@
+@use "../../styles/variables.scss";
+
+.carousel__element-wrapper {
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  width: 346px;
+  height: 346px;
+  margin-left: 15px;
+}
+.carousel__element {
+  box-sizing: inherit;
+  background-color: rgba(0, 0, 0, 0.274);
+  height: 100%;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.carouselElement__name {
+  margin-top: auto;
+  text-align: right;
+  width: 100%;
+}

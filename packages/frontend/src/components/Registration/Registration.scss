@@ -1,0 +1,85 @@
+@use "../../styles/variables.scss";
+
+.app__registration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+.reg__form {
+  background-color: white;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+  grid-template-areas:
+    "login login"
+    "name name"
+    "lastName lastName"
+    "password confirmPassword"
+    "email phone"
+    "address address"
+    "button button";
+
+  .MuiFormHelperText-root {
+    max-width: 300px;
+  }
+}
+.MuiFormControl-root {
+  width: 300px;
+}
+.form__name,
+.form__login,
+.form__last-name,
+.form__email,
+.form__password,
+.form__confirm-password,
+.form__address,
+.form__phone {
+  height: 76px;
+  .MuiInputLabel-root.Mui-focused {
+    color: variables.$brown;
+  }
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: variables.$brown;
+    }
+  }
+}
+.form__login {
+  grid-area: login;
+  width: 100%;
+}
+.form__name {
+  grid-area: name;
+  width: 100%;
+}
+.form__last-name {
+  grid-area: lastName;
+  width: 100%;
+}
+.form__password {
+  grid-area: password;
+}
+.form__confirm-password {
+  grid-area: confirmPassword;
+}
+.form__email {
+  grid-area: email;
+}
+.form__address {
+  grid-area: address;
+  width: 100%;
+}
+.form__phone {
+  grid-area: phone;
+}
+.form__button.MuiButton-root {
+  grid-area: button;
+  background-color: variables.$brown;
+  &:hover {
+    background-color: variables.$sand;
+    color: black;
+  }
+}
