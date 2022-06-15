@@ -1,3 +1,5 @@
 node_modules
+.vscode
+coverage
 packages/DB/node_modules
 packages/frontend/node_modules

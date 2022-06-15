@@ -1,20 +1,18 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { store } from "../../app/store";
-import Authorization from "./Authorization";
+import { render, screen, cleanup, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import RenderWrapper from "./helpers/RenderWrapper";
+import Authorization from "../components/Authorization/Authorization";
 
 enum Logins {
-  TRUE = "test11",
+  TRUE = "test44",
   SHORT = "bbb",
   NOT_LATIN = "вавыфс",
   WITH_SPACE = "john doe",
 }
 enum Passwords {
   TRUE = "fffsfsfsfsfs1F!",
-  EMPTY = "",
   SPACES = "        ",
   SHORT = "bba1",
   ONLY_NUMBERS = "178123546",
@@ -25,11 +23,9 @@ enum Passwords {
 
 function renderApp() {
   render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Authorization />
-      </Provider>
-    </BrowserRouter>
+    <RenderWrapper>
+      <Authorization />
+    </RenderWrapper>
   );
 }
 
@@ -41,21 +37,15 @@ describe("Authorization Page", () => {
   });
   it("should allows the user to login successfully", async () => {
     renderApp();
-    fireEvent.change(screen.getByLabelText("Login"), {
-      target: { value: Logins.TRUE },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: Passwords.TRUE },
-    });
-    fireEvent.click(screen.getByText("Get Authorized"));
+    userEvent.type(screen.getByLabelText("Login"), Logins.TRUE);
+    userEvent.type(screen.getByLabelText("Password"), Passwords.TRUE);
+    userEvent.click(screen.getByText("Get Authorized"));
     const alert = await screen.findByTestId("wait");
     await waitFor(() => {
       expect(alert).toBeInTheDocument();
     });
     await waitFor(() => {
-      setTimeout(() => {
-        expect(window.localStorage.getItem("customer")).toEqual("test11");
-      }, 5500);
+      expect(window.localStorage.getItem("tokenKey")).toBeTruthy();
     });
   });
 });
@@ -64,12 +54,8 @@ describe("Testing login input", () => {
   afterEach(() => cleanup());
   it("shouldn't validate short login", async () => {
     renderApp();
-    fireEvent.change(screen.getByLabelText("Login"), {
-      target: { value: Logins.SHORT },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: Passwords.TRUE },
-    });
+    userEvent.type(screen.getByLabelText("Password"), Passwords.TRUE);
+    userEvent.type(screen.getByLabelText("Login"), Logins.SHORT);
     await waitFor(() => {
       expect(screen.getByText("Get Authorized").getAttribute("disabled")).toBe("");
     });
@@ -79,12 +65,8 @@ describe("Testing login input", () => {
   });
   it("shouldn't validate non latin letters in login", async () => {
     renderApp();
-    fireEvent.change(screen.getByLabelText("Login"), {
-      target: { value: Logins.NOT_LATIN },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: Passwords.TRUE },
-    });
+    userEvent.type(screen.getByLabelText("Password"), Passwords.TRUE);
+    userEvent.type(screen.getByLabelText("Login"), Logins.NOT_LATIN);
     await waitFor(() => {
       expect(screen.getByText("Get Authorized").getAttribute("disabled")).toBe("");
     });
@@ -98,25 +80,15 @@ describe("Testing password input", () => {
   afterEach(() => cleanup());
   it("shoudn't apply short passwords", async () => {
     renderApp();
-    fireEvent.change(screen.getByLabelText("Login"), {
-      target: { value: Logins.TRUE },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: Passwords.SHORT },
-    });
+    userEvent.type(screen.getByLabelText("Login"), Logins.TRUE);
+    userEvent.type(screen.getByLabelText("Password"), Passwords.SHORT);
     await waitFor(() => {
       expect(screen.getByText("Password must be at least 8 characters")).toBeInTheDocument();
     });
   });
   it("shoudn't apply empty string", async () => {
     renderApp();
-    fireEvent.change(screen.getByLabelText("Login"), {
-      target: { value: Logins.TRUE },
-    });
-
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: Passwords.EMPTY },
-    });
+    userEvent.type(screen.getByLabelText("Login"), Logins.TRUE);
     await waitFor(() => {
       expect(screen.getByText("Get Authorized").getAttribute("disabled")).toBe("");
     });
