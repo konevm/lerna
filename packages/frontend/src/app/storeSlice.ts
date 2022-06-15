@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IUser, ICustomer, IAuthorizationCustomer, IState } from "../components/helpers/interfaces";
+import {
+  IUser,
+  ICustomer,
+  IAuthorizationCustomer,
+  IState,
+  IPurchase,
+} from "../components/helpers/interfaces";
 import { Products } from "../components/helpers/products";
 
 import {
@@ -63,6 +69,18 @@ export const asyncCreateCustomer = createAsyncThunk(
   }
 );
 
+export const asyncSetPurchase = createAsyncThunk(
+  "store/asyncSetPurchase",
+  async (newPurchase: IPurchase) => {
+    try {
+      const response = await axios.post("/purchase", newPurchase);
+      return response.data;
+    } catch (error) {
+      console.log({ message: error });
+    }
+  }
+);
+
 const InitialCustomer: ICustomer = {
   id: "",
   login: "",
@@ -76,18 +94,7 @@ const InitialCustomer: ICustomer = {
 
 const initialState: IState = {
   showModal: false,
-  menu: [
-    "About Us",
-    // "Contact Us",
-    "Products",
-    // "Blog",
-    // "Search",
-    // "Privacy Policy",
-    // "Terms of Service",
-    // "Refund Policy",
-    // "Customization & Gifting",
-    "Authorization",
-  ],
+  menu: ["About Us", "Products", "Authorization"],
   payments: [
     firstPay,
     amexPay,
@@ -149,6 +156,10 @@ export const storeSlice = createSlice({
         if (item.amount === 0) store.cart.splice(store.cart.indexOf(item), 1);
       }
     },
+    removeAllFromCart: (store) => {
+      store.cart.length = 0;
+      store.totalPrice = 0;
+    },
     signOutCustomer: (store) => {
       store.isAuthorized = false;
       store.customer = InitialCustomer;
@@ -183,6 +194,11 @@ export const storeSlice = createSlice({
         phone: phone,
       });
     });
+    builder.addCase(asyncSetPurchase.fulfilled, (store) => {
+      store.showModal = false;
+      store.totalPrice = 0;
+      store.cart.length = 0;
+    });
   },
 });
 
@@ -192,6 +208,7 @@ export const {
   getAllInstagramUsers,
   addOneToCart,
   removeOneFromCart,
+  removeAllFromCart,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;

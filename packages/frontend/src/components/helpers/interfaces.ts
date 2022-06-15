@@ -64,3 +64,19 @@ export interface IProduct {
   sale: boolean;
   price: number;
 }
+
+export interface IPurchaseProduct {
+  product: string;
+  amount: number;
+  price: number;
+}
+export interface IPurchase {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  address: string;
+  phone: string;
+  totalPrice: number;
+  products: IPurchaseProduct[];
+}

@@ -1,0 +1,44 @@
+@use "../../styles/variables.scss";
+
+.app__check {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  align-items: center;
+  &.MuiButton-contained {
+    background-color: variables.$brown;
+    &:hover {
+      background-color: #fff;
+      color: variables.$brown;
+    }
+  }
+  &.MuiButton-outlined {
+    color: variables.$sand;
+    border-color: variables.$sand;
+    color: black;
+    &:hover {
+      background-color: variables.$sand;
+      color: #fff;
+    }
+  }
+  .wait {
+    color: variables.$brown;
+  }
+}
+.check__text,
+.check__address,
+.check__phone,
+.check__email {
+  color: black;
+  font-family: "Roboto" sans-serif;
+}
+.check__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 20px;
+}
+.list__item {
+  margin-top: 20px;
+}

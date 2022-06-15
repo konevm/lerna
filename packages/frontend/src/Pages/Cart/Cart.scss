@@ -1,7 +1,36 @@
 @use "../../styles/variables.scss";
 
 .app__cart {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  .MuiButton-root {
+    margin: 20px;
+    box-sizing: border-box;
+    border: 1px solid variables.$brown;
+    transition: 500ms;
+    &.MuiButton-contained {
+      background-color: variables.$brown;
+      &:hover {
+        background-color: #fff;
+        color: variables.$brown;
+      }
+    }
+    &.MuiButton-outlined {
+      color: variables.$sand;
+      border-color: variables.$sand;
+      color: black;
+      &:hover {
+        background-color: variables.$sand;
+        color: #fff;
+      }
+    }
+  }
+}
+.cart__title {
+  margin: 0;
+  padding: 15px;
 }
 .cart__list {
   list-style: none;
