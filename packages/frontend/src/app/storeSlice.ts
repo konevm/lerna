@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import axios from "axios";
 import {
   IUser,
@@ -49,9 +50,12 @@ export const asyncSignInCustomer = createAsyncThunk(
   async (customer: IAuthorizationCustomer) => {
     try {
       const response = await axios.get("/authorization", { params: customer });
-      localStorage.setItem("tokenKey", response.data.token);
-      axios.defaults.headers.common["authorization"] = response.data.token;
-      return response.data.user;
+      if (response.data.token) {
+        localStorage.setItem("tokenKey", response.data.token);
+        axios.defaults.headers.common["authorization"] = response.data.token;
+        return response.data.user;
+      }
+      return response.data;
     } catch (error) {
       console.log({ message: error });
     }
@@ -121,8 +125,9 @@ const initialState: IState = {
   cart: [],
   totalPrice: 0,
   customer: InitialCustomer,
-  customers: [],
+  registrationComplete: false,
   isAuthorized: false,
+  errorMessage: "",
 };
 
 export const storeSlice = createSlice({
@@ -165,6 +170,9 @@ export const storeSlice = createSlice({
       store.customer = InitialCustomer;
       localStorage.removeItem("tokenKey");
     },
+    setRegisteredFalse: (store) => {
+      store.registrationComplete = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUsers.fulfilled, (store, action) => {
@@ -174,25 +182,28 @@ export const storeSlice = createSlice({
       if (action.payload) store.posts = action.payload;
     });
     builder.addCase(asyncSignInCustomer.pending, (store) => {
+      store.errorMessage = "";
       store.showModal = true;
     });
     builder.addCase(asyncSignInCustomer.fulfilled, (store, action) => {
-      store.showModal = false;
-      store.isAuthorized = true;
-      store.customer = action.payload;
+      if (localStorage.getItem("tokenKey")) {
+        store.showModal = false;
+        store.isAuthorized = true;
+        store.customer = action.payload;
+      } else {
+        store.errorMessage = action.payload;
+      }
+    });
+    builder.addCase(asyncCreateCustomer.pending, (store) => {
+      store.errorMessage = "";
     });
     builder.addCase(asyncCreateCustomer.fulfilled, (store, action) => {
-      const { id, login, name, lastName, email, password, address, phone } = action.payload;
-      store.customers.push({
-        id: id,
-        login: login,
-        name: name,
-        lastName: lastName,
-        email: email,
-        password: password,
-        address: address,
-        phone: phone,
-      });
+      if (!action.payload.status) {
+        store.errorMessage = action.payload.message;
+        return;
+      }
+      store.errorMessage = "";
+      store.registrationComplete = true;
     });
     builder.addCase(asyncSetPurchase.fulfilled, (store) => {
       store.showModal = false;
@@ -209,6 +220,7 @@ export const {
   addOneToCart,
   removeOneFromCart,
   removeAllFromCart,
+  setRegisteredFalse,
 } = storeSlice.actions;
 
 export default storeSlice.reducer;

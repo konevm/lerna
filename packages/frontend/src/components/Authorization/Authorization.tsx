@@ -6,14 +6,20 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { authorisationSchema } from "../helpers/validationSchemas";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { asyncSignInCustomer } from "../../app/storeSlice";
+import { asyncSignInCustomer, setRegisteredFalse } from "../../app/storeSlice";
 import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
 import "./Authorization.scss";
 
 const Authorization: React.FC = () => {
-  const { isAuthorized } = useAppSelector((store) => store.data);
+  const { isAuthorized, errorMessage, registrationComplete } = useAppSelector(
+    (store) => store.data
+  );
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (registrationComplete) dispatch(setRegisteredFalse());
+  }, [dispatch, registrationComplete]);
 
   useEffect(() => {
     if (isAuthorized) navigate(AppRoutes.MAIN);
@@ -60,7 +66,11 @@ const Authorization: React.FC = () => {
             </Button>
             {isSubmitting && (
               <ModalsWrapper>
-                <AutorenewIcon className="wait" data-testid="wait" />
+                {errorMessage !== "" ? (
+                  <h2 className="form__error">Sorry, but {errorMessage}</h2>
+                ) : (
+                  <AutorenewIcon className="wait" data-testid="wait" />
+                )}
               </ModalsWrapper>
             )}
           </Form>
