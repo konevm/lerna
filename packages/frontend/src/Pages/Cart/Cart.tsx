@@ -1,10 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { changeModalVisibility } from "../../app/storeSlice";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import CartItem from "../../components/CartItem/CartItem";
 import ModalsWrapper from "../../components/ModalWrapper/ModalsWrapper";
+
+import CartCheck from "../../components/CartCheck/CartCheck";
 import "./Cart.scss";
 
 const Cart: React.FC = () => {
@@ -13,8 +16,9 @@ const Cart: React.FC = () => {
   const navigate = useNavigate();
   return (
     <div className="app__cart">
-      {cart.length === 0 ? "Your cart is empty." : "Your products:"}
-      {cart.length === 0 && <Link to={AppRoutes.PRODUCTS}> Continue shopping </Link>}
+      <h2 className="cart__title">
+        {cart.length === 0 ? "Your cart is empty." : "Your products:"}
+      </h2>
       <ul className="cart__list">
         {cart.map((product) => (
           <li key={product.id}>
@@ -23,11 +27,18 @@ const Cart: React.FC = () => {
         ))}
       </ul>
       Total price: $ {totalPrice.toFixed(2)}
-      <button onClick={() => navigate(AppRoutes.PRODUCTS)}>Continue shopping</button>
-      <button onClick={() => dispatch(changeModalVisibility())}>Make purchase</button>
+      <Button
+        variant="contained"
+        disabled={!totalPrice}
+        onClick={() => dispatch(changeModalVisibility())}>
+        Make purchase
+      </Button>
+      <Button variant="outlined" onClick={() => navigate(AppRoutes.PRODUCTS)}>
+        Continue shopping
+      </Button>
       <ModalsWrapper>
         {isAuthorized ? (
-          <div>Check Cart</div>
+          <CartCheck />
         ) : (
           <div className="modal__warning">
             You must be

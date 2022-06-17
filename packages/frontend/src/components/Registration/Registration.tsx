@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TextField, Button } from "@mui/material";
-import { useAppDispatch } from "../../app/hooks";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { asyncCreateCustomer } from "../../app/storeSlice";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { registrationSchema } from "../helpers/validationSchemas";
+import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
 import "./Registration.scss";
 
 const Registration: React.FC = () => {
   const ID = Number(new Date()).toString();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { errorMessage, registrationComplete } = useAppSelector((store) => store.data);
+
+  useEffect(() => {
+    if (registrationComplete) navigate(AppRoutes.AUTH);
+  }, [navigate, registrationComplete]);
 
   return (
     <div className="app__registration">
@@ -29,9 +36,8 @@ const Registration: React.FC = () => {
         validationSchema={registrationSchema}
         onSubmit={(values) => {
           dispatch(asyncCreateCustomer({ ...values, id: ID }));
-          navigate(`${AppRoutes.AUTH}`);
         }}>
-        {({ handleChange, values, errors }) => (
+        {({ handleChange, values, errors, isSubmitting }) => (
           <Form className="reg__form">
             <TextField
               label="Login"
@@ -39,8 +45,8 @@ const Registration: React.FC = () => {
               value={values.login}
               className="form__login"
               name="login"
-              helperText={errors.login}
-              error={!!errors.login}
+              helperText={errors.login || errorMessage}
+              error={!!(errors.login || errorMessage)}
               onChange={handleChange}
             />
             <TextField
@@ -116,6 +122,11 @@ const Registration: React.FC = () => {
             <Button className="form__button" variant="contained" type="submit">
               Get Registered
             </Button>
+            {isSubmitting && (
+              <ModalsWrapper>
+                <AutorenewIcon className="wait" data-testid="wait" />
+              </ModalsWrapper>
+            )}
           </Form>
         )}
       </Formik>

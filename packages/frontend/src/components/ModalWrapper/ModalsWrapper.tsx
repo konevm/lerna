@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { changeModalVisibility } from "../../app/storeSlice";
-
 import "./ModalsWrapper.scss";
 
 interface IModalProps {

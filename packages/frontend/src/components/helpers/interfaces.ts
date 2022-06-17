@@ -51,8 +51,9 @@ export interface IState {
   cart: ICartItem[];
   totalPrice: number;
   customer: ICustomer;
-  customers: ICustomer[];
+  registrationComplete: boolean;
   isAuthorized: boolean;
+  errorMessage: string;
 }
 
 export interface IProduct {
@@ -63,4 +64,20 @@ export interface IProduct {
   new: boolean;
   sale: boolean;
   price: number;
+}
+
+export interface IPurchaseProduct {
+  product: string;
+  amount: number;
+  price: number;
+}
+export interface IPurchase {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  address: string;
+  phone: string;
+  totalPrice: number;
+  products: IPurchaseProduct[];
 }
