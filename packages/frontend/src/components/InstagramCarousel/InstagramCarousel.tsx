@@ -1,11 +1,8 @@
 import Carousel from "nuka-carousel";
 import React, { useEffect } from "react";
-// import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
-
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getUsers } from "../../app/storeSlice";
+import { getUsers } from "../../app/trunks";
 import InstagramElement from "../InstagramElement/InstagramElement";
-// import "pure-react-carousel/dist/react-carousel.es.css";
 import "./InstagramCarousel.scss";
 
 const InstagramCarousel: React.FC = () => {

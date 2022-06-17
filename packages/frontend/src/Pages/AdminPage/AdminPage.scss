@@ -1,0 +1,29 @@
+.app__admin {
+  padding: 40px;
+}
+.admin__navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.navigation__customers,
+.navigation__purchases {
+  cursor: pointer;
+  padding: 20px;
+  background-color: white;
+  border-radius: 4px 4px 0 0;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 5px solid white;
+}
+.admin__data {
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.active {
+  position: relative;
+  top: 2px;
+}

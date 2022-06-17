@@ -11,7 +11,7 @@ import "./Header.scss";
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { cart, isAuthorized } = useAppSelector((store) => store.data);
+  const { cart, isAuthorized, isAdmin } = useAppSelector((store) => store.data);
   const getCartTotal = () => {
     let total = 0;
     cart.forEach((item) => (total = total + item.amount));
@@ -58,6 +58,7 @@ const Header: React.FC = () => {
             Sign in
           </Link>
         )}
+        {isAdmin && <Link to={AppRoutes.ADMIN}>Admin</Link>}
       </div>
     </header>
   );

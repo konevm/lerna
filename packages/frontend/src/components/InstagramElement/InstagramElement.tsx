@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getPosts } from "../../app/storeSlice";
+import { getPosts } from "../../app/trunks";
 import { IUser } from "../helpers/interfaces";
 import "./InstagramElement.scss";
 

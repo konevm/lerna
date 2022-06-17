@@ -27,6 +27,7 @@ export interface ICustomer {
   password: string;
   address: string;
   phone: string;
+  isAdmin: boolean;
 }
 export interface INewCustomer {
   id: string;
@@ -51,6 +52,7 @@ export interface IState {
   cart: ICartItem[];
   totalPrice: number;
   customer: ICustomer;
+  isAdmin: boolean;
   registrationComplete: boolean;
   isAuthorized: boolean;
   errorMessage: string;

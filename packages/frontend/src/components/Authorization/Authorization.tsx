@@ -6,7 +6,8 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { authorisationSchema } from "../helpers/validationSchemas";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { asyncSignInCustomer, setRegisteredFalse } from "../../app/storeSlice";
+import { setRegisteredFalse } from "../../app/storeSlice";
+import { asyncSignInCustomer } from "../../app/trunks";
 import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
 import "./Authorization.scss";
 

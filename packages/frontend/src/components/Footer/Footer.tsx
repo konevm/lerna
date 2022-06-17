@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
           <InstagramIcon />
         </li>
       </ul>
-      <span>© 2021 Kal Hans Naturals.</span>
+      <span className="footer__tm">© 2021 Kal Hans Naturals.</span>
       <ul className="footer__payments">
         {payments.map((item) => (
           <li className="payments__icon" key={item} style={{ backgroundImage: `url(${item})` }} />

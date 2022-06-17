@@ -30,15 +30,30 @@ router.post("/registration", async (req, res) => {
     const customer = await Customers.findOne({
       login: req.body.login,
     });
+    const allCustomers = await Customers.find();
     if (customer) {
       res.send({ status: false, message: "this login already exists" });
     } else {
       const customer = new Customers(req.body);
       customer.password = bcrypt.hashSync(req.body.password, 10);
       customer.token = jwt.sign({ _id: customer._id }, tokenKey);
+      if (allCustomers.length === 0) customer.isAdmin = true;
       await customer.save();
       res.send({ status: true, message: "new customer is registered" });
     }
+  } catch (error) {
+    console.log({ message: error });
+  }
+});
+
+router.get("/customers", async (req, res) => {
+  try {
+    const customers = await Customers.find();
+    customers
+      .sort((a, b) => a.login > b.login)
+      .sort((a, b) => +a.isAdmin - +b.isAdmin)
+      .reverse();
+    res.send(customers);
   } catch (error) {
     console.log({ message: error });
   }

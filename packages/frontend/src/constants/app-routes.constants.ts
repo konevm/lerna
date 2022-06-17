@@ -4,4 +4,5 @@ export enum AppRoutes {
   CART = "/cart",
   AUTH = "/authorization",
   REG = "/registration",
+  ADMIN = "/admin",
 }

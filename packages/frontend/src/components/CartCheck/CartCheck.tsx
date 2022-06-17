@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { removeAllFromCart, changeModalVisibility, asyncSetPurchase } from "../../app/storeSlice";
+import { removeAllFromCart, changeModalVisibility } from "../../app/storeSlice";
+import { asyncSetPurchase } from "../../app/trunks";
 import { IPurchaseProduct } from "../helpers/interfaces";
 import "./CartCheck.scss";
 
