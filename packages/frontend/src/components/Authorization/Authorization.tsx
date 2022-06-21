@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TextField, Button } from "@mui/material";
+import { useGoogleLogin } from "@react-oauth/google";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { authorisationSchema } from "../helpers/validationSchemas";
@@ -25,6 +26,13 @@ const Authorization: React.FC = () => {
   useEffect(() => {
     if (isAuthorized) navigate(AppRoutes.MAIN);
   }, [isAuthorized, navigate]);
+
+  const loginWithGoogle = useGoogleLogin({
+    scope:
+      "email profile openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+    onSuccess: (Response) => console.log(Response),
+  });
+
   return (
     <div className="app__authorization">
       <Formik
@@ -78,6 +86,13 @@ const Authorization: React.FC = () => {
         )}
       </Formik>
       <Link to={AppRoutes.REG}>Get Registered</Link>
+
+      <span
+        onClick={() => {
+          loginWithGoogle();
+        }}>
+        Authorization by Google
+      </span>
     </div>
   );
 };

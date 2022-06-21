@@ -4,13 +4,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import SearchIcon from "@mui/icons-material/Search";
 import { AppRoutes } from "../../constants/app-routes.constants";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { signOutCustomer } from "../../app/storeSlice";
+import { useAppSelector } from "../../app/hooks";
+
 import logoURL from "../../images/Logo.svg";
 import "./Header.scss";
 
 const Header: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { cart, isAuthorized, isAdmin } = useAppSelector((store) => store.data);
   const getCartTotal = () => {
     let total = 0;
@@ -50,15 +49,14 @@ const Header: React.FC = () => {
           Products
         </Link>
         {isAuthorized ? (
-          <span className="header-menu__item" onClick={() => dispatch(signOutCustomer())}>
-            Sing out
-          </span>
+          <Link to={AppRoutes.ACCOUNT} className="header-menu__item">
+            {isAdmin ? "Admin" : "Personal"}
+          </Link>
         ) : (
           <Link to={AppRoutes.AUTH} className="header-menu__item">
             Sign in
           </Link>
         )}
-        {isAdmin && <Link to={AppRoutes.ADMIN}>Admin</Link>}
       </div>
     </header>
   );

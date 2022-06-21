@@ -8,6 +8,7 @@ const ProductShema = mongoose.Schema({
 
 const PurchaseSchema = mongoose.Schema({
   id: { type: String, require: true },
+  customerId: { type: String, require: true },
   name: { type: String, require: true },
   lastName: { type: String, require: true },
   email: { type: String, require: true },

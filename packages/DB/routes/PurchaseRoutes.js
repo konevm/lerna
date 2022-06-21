@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Purchase = require("../models/Purchase");
 const jwt = require("jsonwebtoken");
+const Purchase = require("../models/Purchase");
+const Customers = require("../models/Customers");
 
 const tokenKey = "myNewJWTTokenKey";
 
@@ -35,9 +36,17 @@ const auth = (req, res, next) => {
 
 router.get("/purchases", async (req, res) => {
   try {
-    const purchases = await Purchase.find();
-    purchases.sort((a, b) => a.totalPrice - b.totalPrice).reverse();
-    res.send(purchases);
+    const id = req.query.id;
+    console.log(id);
+    const customer = await Customers.findOne({ id: id });
+
+    if (customer.isAdmin) {
+      const purchases = await Purchase.find().sort({ totalPrice: -1 });
+      res.send(purchases);
+    } else {
+      const purchases = await Purchase.find({ customerId: id }).sort({ totalPrice: -1 });
+      res.send(purchases);
+    }
   } catch (error) {
     console.log({ message: error });
   }

@@ -9,6 +9,7 @@ import {
 } from "./trunks";
 import { IUser, ICustomer, IState } from "../components/helpers/interfaces";
 import { Products } from "../components/helpers/products";
+import { asyncUserModification } from "./trunks";
 
 import {
   gPay,
@@ -149,11 +150,22 @@ export const storeSlice = createSlice({
       store.errorMessage = "";
       store.registrationComplete = true;
     });
-    builder.addCase(asyncSetPurchase.fulfilled, (store) => {
-      store.showModal = false;
-      store.totalPrice = 0;
-      store.cart.length = 0;
-    });
+    builder
+      .addCase(asyncSetPurchase.fulfilled, (store) => {
+        store.showModal = false;
+        store.totalPrice = 0;
+        store.cart.length = 0;
+      })
+      .addCase(asyncUserModification.fulfilled, (store, action) => {
+        if (action.payload.customers) {
+          const thisUser = action.payload.customers.find(
+            (customer: ICustomer) => customer.id === store.customer.id
+          );
+          if (!thisUser.isAdmin) {
+            storeSlice.caseReducers.signOutCustomer(store);
+          }
+        }
+      });
   },
 });
 

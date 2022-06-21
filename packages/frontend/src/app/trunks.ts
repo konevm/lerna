@@ -69,4 +69,52 @@ const asyncSetPurchase = createAsyncThunk(
   }
 );
 
-export { getUsers, getPosts, asyncSetPurchase, asyncCreateCustomer, asyncSignInCustomer };
+const getAllCustomers = createAsyncThunk("admin/getAllCustomers", async () => {
+  try {
+    const response = await axios.get("/customers");
+    return response.data;
+  } catch (error) {
+    console.log({ message: error });
+  }
+});
+
+const getPurchases = createAsyncThunk("admin/getAllPurchases", async (id?: string) => {
+  try {
+    const response = await axios.get(`/purchases`, { params: { id: id } });
+    return response.data;
+  } catch (error) {
+    console.log({ message: error });
+  }
+});
+
+const asyncUserModification = createAsyncThunk(
+  "admin/asyncUserModification",
+  async (user: ICustomer) => {
+    try {
+      const response = await axios.post("/customers", user);
+      return response.data;
+    } catch (error) {
+      console.log({ message: error });
+    }
+  }
+);
+const asyncDeleteUser = createAsyncThunk("admin/asyncDeleteUser", async (id: string) => {
+  try {
+    const response = await axios.delete("/customers", { params: { id: id } });
+    return response.data;
+  } catch (error) {
+    console.log({ message: error });
+  }
+});
+
+export {
+  getUsers,
+  getPosts,
+  asyncSetPurchase,
+  asyncCreateCustomer,
+  asyncSignInCustomer,
+  getAllCustomers,
+  getPurchases,
+  asyncUserModification,
+  asyncDeleteUser,
+};

@@ -75,6 +75,7 @@ export interface IPurchaseProduct {
 }
 export interface IPurchase {
   id: string;
+  customerId: string;
   name: string;
   lastName: string;
   email: string;

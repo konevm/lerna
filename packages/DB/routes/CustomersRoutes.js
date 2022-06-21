@@ -39,24 +39,57 @@ router.post("/registration", async (req, res) => {
       customer.token = jwt.sign({ _id: customer._id }, tokenKey);
       if (allCustomers.length === 0) customer.isAdmin = true;
       await customer.save();
-      res.send({ status: true, message: "new customer is registered" });
+      const customers = await Customers.find().sort({ login: 1, isAdmin: 1 });
+
+      res.send({ status: true, customers: customers });
     }
   } catch (error) {
     console.log({ message: error });
   }
 });
 
-router.get("/customers", async (req, res) => {
-  try {
-    const customers = await Customers.find();
-    customers
-      .sort((a, b) => a.login > b.login)
-      .sort((a, b) => +a.isAdmin - +b.isAdmin)
-      .reverse();
-    res.send(customers);
-  } catch (error) {
-    console.log({ message: error });
+const auth = async (req, res, next) => {
+  const token = (req.headers.authorization || "").replace("Bearer ", "");
+  if (token) {
+    const id = jwt.verify(token, tokenKey);
+    const user = await Customers.findOne({ _id: id._id });
+    if (user.isAdmin) {
+      next();
+    } else res.send("Not admin");
   }
-});
+};
+
+router
+  .route("/customers")
+  .get(async (req, res) => {
+    try {
+      const customers = await Customers.find().sort({ login: 1, isAdmin: 1 });
+      res.send(customers);
+    } catch (error) {
+      console.log({ message: error });
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      const user = req.body;
+      const customer = await Customers.findOneAndReplace({ id: user.id }, user);
+      await customer.save();
+      const customers = await Customers.find().sort({ login: 1, isAdmin: 1 });
+      res.send({ customers: customers });
+    } catch (error) {
+      console.log({ message: error });
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      const id = req.query.id;
+      await Customers.findOneAndDelete({ id: id });
+
+      const customers = await Customers.find().sort({ login: 1, isAdmin: 1 });
+      res.send(customers);
+    } catch (error) {
+      console.log({ message: error });
+    }
+  });
 
 module.exports = router;

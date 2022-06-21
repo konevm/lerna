@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           Products
         </Link>
         {isAuthorized ? (
-          <span className="footer-menu__item" onClick={() => dispatch(signOutCustomer())}>
+          <span className="footer__menu-item" onClick={() => dispatch(signOutCustomer())}>
             Sing out
           </span>
         ) : (

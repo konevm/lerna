@@ -9,7 +9,7 @@ import "./CartCheck.scss";
 
 const CartCheck: React.FC = () => {
   const { customer, cart, totalPrice } = useAppSelector((store) => store.data);
-  const { name, lastName, address, phone, email } = customer;
+  const { name, lastName, address, phone, email, id } = customer;
   const [newPurchase, setNewPurchase] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const products: IPurchaseProduct[] = [];
@@ -45,6 +45,7 @@ const CartCheck: React.FC = () => {
               dispatch(
                 asyncSetPurchase({
                   id: Number(new Date()).toString(),
+                  customerId: id,
                   name: name,
                   lastName: lastName,
                   email: email,
