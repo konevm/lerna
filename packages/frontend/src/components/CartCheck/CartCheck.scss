@@ -42,3 +42,10 @@
 .list__item {
   margin-top: 20px;
 }
+.app__wait {
+  background-color: none;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  align-items: center;
+}

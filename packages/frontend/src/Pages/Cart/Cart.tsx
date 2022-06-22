@@ -6,14 +6,14 @@ import { changeModalVisibility } from "../../app/storeSlice";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import CartItem from "../../components/CartItem/CartItem";
 import ModalsWrapper from "../../components/ModalWrapper/ModalsWrapper";
-
 import CartCheck from "../../components/CartCheck/CartCheck";
 import "./Cart.scss";
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { cart, totalPrice, isAuthorized } = useAppSelector((store) => store.data);
   const navigate = useNavigate();
+  const { cart, totalPrice, isAuthorized } = useAppSelector((store) => store.data);
+
   return (
     <div className="app__cart">
       <h2 className="cart__title">
@@ -56,4 +56,5 @@ const Cart: React.FC = () => {
     </div>
   );
 };
+
 export default Cart;

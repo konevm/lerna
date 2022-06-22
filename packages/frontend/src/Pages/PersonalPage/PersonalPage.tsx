@@ -16,10 +16,12 @@ const PersonalPage: React.FC = () => {
   } = useAppSelector((store) => store.data);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isAuthorized) navigate(AppRoutes.MAIN, { replace: true });
   }, [navigate, isAuthorized]);
   if (isAdmin) return <AdminPage />;
+
   return (
     <div className="app__personal">
       <h2 className="personal__title">

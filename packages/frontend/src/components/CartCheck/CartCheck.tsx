@@ -21,7 +21,7 @@ const CartCheck: React.FC = () => {
     });
   });
   return (
-    <div className="app__check">
+    <div className={newPurchase ? "app__check" : "app__wait"}>
       {newPurchase ? (
         <>
           <h2 className="check__customer">

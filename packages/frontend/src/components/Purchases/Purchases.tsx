@@ -6,7 +6,7 @@ import ModalsWrapper from "../../components/ModalWrapper/ModalsWrapper";
 import Purchase from "../Purchase/Purchase";
 
 const Purchases: React.FC = () => {
-  const { purchases } = useAppSelector((store) => store.admin);
+  const { purchases, errorMessage } = useAppSelector((store) => store.admin);
   const {
     isAdmin,
     customer: { id },
@@ -14,16 +14,19 @@ const Purchases: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!purchases.length) {
+    if (!purchases.length && !errorMessage && id) {
       dispatch(getPurchases(id));
     }
-  }, [dispatch, purchases, isAdmin, id]);
+  }, [dispatch, purchases, isAdmin, id, errorMessage]);
+
   return (
     <div className="app__purchases">
       <ul className="purchases__list">
-        {purchases.map((purchase) => (
-          <Purchase purchase={purchase} key={purchase.id} />
-        ))}
+        {!errorMessage ? (
+          purchases.map((purchase) => <Purchase purchase={purchase} key={purchase.id} />)
+        ) : (
+          <>{errorMessage}</>
+        )}
       </ul>
       <ModalsWrapper>
         <AutorenewIcon className="wait" data-testid="wait" />

@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
 import { useAppDispatch } from "../../app/hooks";
-import { changeAdminModalVisibility } from "../../app/adminSlice";
 import { asyncUserModification } from "../../app/trunks";
 import { ICustomer } from "../helpers/interfaces";
 import { modificationSchema } from "../helpers/validationSchemas";
@@ -21,6 +20,7 @@ const UserModification: React.FC<IUserModificationProps> = ({
 }) => {
   const { login, name, lastName, email, address, phone, isAdmin, id } = user;
   const dispatch = useAppDispatch();
+
   return (
     <main className="admin__user-form">
       <Formik
@@ -40,7 +40,7 @@ const UserModification: React.FC<IUserModificationProps> = ({
         }}
         validationSchema={modificationSchema}>
         {({ handleChange, values, errors }) => (
-          <Form>
+          <Form className="user-form__form">
             <TextField
               label="Login"
               variant="outlined"
@@ -119,7 +119,6 @@ const UserModification: React.FC<IUserModificationProps> = ({
               className="form__button delete"
               variant="contained"
               onClick={() => {
-                dispatch(changeAdminModalVisibility());
                 setDeletedCustomerId(id);
               }}>
               Delete customer

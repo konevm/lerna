@@ -1,5 +1,5 @@
-import Carousel from "nuka-carousel";
 import React, { useEffect } from "react";
+import Carousel from "nuka-carousel";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getUsers, getPosts } from "../../app/trunks";
 import InstagramElement from "../InstagramElement/InstagramElement";
@@ -8,6 +8,7 @@ import "./InstagramCarousel.scss";
 const InstagramCarousel: React.FC = () => {
   const dispatch = useAppDispatch();
   const { instagramUsers: usersList, posts } = useAppSelector((store) => store.data);
+
   useEffect(() => {
     if (!usersList.length) dispatch(getUsers());
     if (!posts.length) dispatch(getPosts());

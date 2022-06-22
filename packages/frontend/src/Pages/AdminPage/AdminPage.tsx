@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { signOutCustomer } from "../../app/storeSlice";
@@ -11,8 +11,15 @@ import "./AdminPage.scss";
 const AdminPage: React.FC = () => {
   const { isAdmin } = useAppSelector((store) => store.data);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [showUsers, setShowUsers] = useState<boolean>(true);
-  if (!isAdmin) return <Navigate to={AppRoutes.MAIN} replace />;
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate(AppRoutes.MAIN, { replace: true });
+    }
+  }, [navigate, isAdmin]);
+
   return (
     <main className="app__admin">
       <div className="admin__navigation">

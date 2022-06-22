@@ -8,6 +8,7 @@ interface IPurchaseProps {
 
 const Purchase: React.FC<IPurchaseProps> = ({ purchase }) => {
   const { id, name, lastName, email, address, phone, totalPrice, products } = purchase;
+
   return (
     <div className="purchase">
       <h2 className="purchase__id">id: {id}</h2>

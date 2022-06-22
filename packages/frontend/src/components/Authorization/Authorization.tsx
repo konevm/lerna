@@ -88,6 +88,7 @@ const Authorization: React.FC = () => {
       <Link to={AppRoutes.REG}>Get Registered</Link>
 
       <span
+        className="form_google"
         onClick={() => {
           loginWithGoogle();
         }}>

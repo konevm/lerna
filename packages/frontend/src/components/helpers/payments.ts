@@ -9,7 +9,7 @@ import springPay from "../../images/payments/springPayment.svg";
 import squarePay from "../../images/payments/squarePayment.svg";
 import visaPay from "../../images/payments/visaPayment.svg";
 
-export {
+export const payments = [
   gPay,
   amexPay,
   firstPay,
@@ -20,4 +20,4 @@ export {
   springPay,
   squarePay,
   visaPay,
-};
+];

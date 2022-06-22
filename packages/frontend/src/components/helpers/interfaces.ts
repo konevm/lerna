@@ -1,24 +1,44 @@
-export interface IAuthorizationCustomer {
+interface IAuthorizationCustomer {
   login: string;
   password: string;
 }
-export interface IUser {
+
+interface IAdminState {
+  customers: ICustomer[];
+  purchases: IPurchase[];
+  errorMessage: string;
+}
+
+interface IUser {
   id: number;
   email: string;
   first_name: string;
   last_name: string;
   avatar: string;
 }
-export interface IPost {
+
+interface IPost {
   userId: number;
   id: number;
   title: string;
   body: string;
 }
-export interface ICartItem extends IProduct {
+
+interface IProduct {
+  id: number;
+  imageURL: string;
+  name: string;
+  description: string;
+  new: boolean;
+  sale: boolean;
+  price: number;
+}
+
+interface ICartItem extends IProduct {
   amount: number;
 }
-export interface ICustomer {
+
+interface ICustomer {
   id: string;
   login: string;
   name: string;
@@ -29,7 +49,8 @@ export interface ICustomer {
   phone: string;
   isAdmin: boolean;
 }
-export interface INewCustomer {
+
+interface INewCustomer {
   id: string;
   login: string;
   name: string;
@@ -41,7 +62,7 @@ export interface INewCustomer {
   phone: string;
 }
 
-export interface IState {
+interface IState {
   showModal: boolean;
   menu: string[];
   payments: string[];
@@ -58,22 +79,12 @@ export interface IState {
   errorMessage: string;
 }
 
-export interface IProduct {
-  id: number;
-  imageURL: string;
-  name: string;
-  description: string;
-  new: boolean;
-  sale: boolean;
-  price: number;
-}
-
-export interface IPurchaseProduct {
+interface IPurchaseProduct {
   product: string;
   amount: number;
   price: number;
 }
-export interface IPurchase {
+interface IPurchase {
   id: string;
   customerId: string;
   name: string;
@@ -84,3 +95,17 @@ export interface IPurchase {
   totalPrice: number;
   products: IPurchaseProduct[];
 }
+
+export type {
+  IAuthorizationCustomer,
+  IAdminState,
+  IUser,
+  IPost,
+  ICartItem,
+  IProduct,
+  ICustomer,
+  INewCustomer,
+  IState,
+  IPurchaseProduct,
+  IPurchase,
+};

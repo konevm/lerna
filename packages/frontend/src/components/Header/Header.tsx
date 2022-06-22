@@ -5,17 +5,17 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import SearchIcon from "@mui/icons-material/Search";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { useAppSelector } from "../../app/hooks";
-
 import logoURL from "../../images/Logo.svg";
 import "./Header.scss";
 
 const Header: React.FC = () => {
   const { cart, isAuthorized, isAdmin } = useAppSelector((store) => store.data);
-  const getCartTotal = () => {
+
+  const getCartTotal = (() => {
     let total = 0;
     cart.forEach((item) => (total = total + item.amount));
     return total;
-  };
+  })();
 
   return (
     <header className="app__header">
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
       {cart.length > 0 && (
         <Link to={AppRoutes.CART} className="header__cart">
           <ShoppingBasketIcon className="header__basket" fontSize="large" />
-          <div className="cart__products">{getCartTotal()}</div>
+          <div className="cart__products">{getCartTotal}</div>
         </Link>
       )}
       <div className="header__menu">

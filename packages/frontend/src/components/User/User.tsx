@@ -12,6 +12,7 @@ interface IUserProps {
 const User: React.FC<IUserProps> = ({ user, setDeletedCustomerId }) => {
   const { login, name, lastName, email, address, phone, isAdmin } = user;
   const [isChangeOpened, setChangeOpened] = useState<boolean>(false);
+
   return (
     <div className={isAdmin ? "user admin" : "user"}>
       <h2 className="user__login">

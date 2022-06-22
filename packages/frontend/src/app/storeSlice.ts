@@ -1,28 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { ICustomer, IState } from "../components/helpers/interfaces";
+import { Products } from "../components/helpers/products";
+import { payments } from "../components/helpers/payments";
 import {
   getUsers,
   getPosts,
   asyncSetPurchase,
   asyncCreateCustomer,
   asyncSignInCustomer,
+  asyncUserModification,
+  asyncDeleteUser,
+  getAllCustomers,
+  getPurchases,
 } from "./trunks";
-import { IUser, ICustomer, IState } from "../components/helpers/interfaces";
-import { Products } from "../components/helpers/products";
-import { asyncUserModification } from "./trunks";
-
-import {
-  gPay,
-  amexPay,
-  firstPay,
-  flashPay,
-  mastercardPay,
-  mPay,
-  ruPay,
-  springPay,
-  squarePay,
-  visaPay,
-} from "../components/helpers/payments";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -41,18 +32,7 @@ const InitialCustomer: ICustomer = {
 const initialState: IState = {
   showModal: false,
   menu: ["About Us", "Products", "Authorization"],
-  payments: [
-    firstPay,
-    amexPay,
-    flashPay,
-    gPay,
-    mastercardPay,
-    mPay,
-    springPay,
-    squarePay,
-    ruPay,
-    visaPay,
-  ],
+  payments: payments,
   benefits: [
     "GMO's",
     "Toxins",
@@ -79,9 +59,6 @@ export const storeSlice = createSlice({
   reducers: {
     changeModalVisibility: (store) => {
       store.showModal = !store.showModal;
-    },
-    getAllInstagramUsers: (store, action: PayloadAction<IUser[]>) => {
-      store.instagramUsers = action.payload;
     },
     addOneToCart: (store, action: PayloadAction<number>) => {
       const productByActionNumber = Products.find((item) => item.id === action.payload);
@@ -119,6 +96,14 @@ export const storeSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getAllCustomers.pending, (store) => {
+      storeSlice.caseReducers.changeModalVisibility(store);
+    });
+    builder.addCase(getAllCustomers.fulfilled, (store, action) => {
+      if (action.payload[0].id) {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      }
+    });
     builder.addCase(getUsers.fulfilled, (store, action) => {
       if (action.payload) store.instagramUsers = action.payload;
     });
@@ -127,11 +112,11 @@ export const storeSlice = createSlice({
     });
     builder.addCase(asyncSignInCustomer.pending, (store) => {
       store.errorMessage = "";
-      store.showModal = true;
+      storeSlice.caseReducers.changeModalVisibility(store);
     });
     builder.addCase(asyncSignInCustomer.fulfilled, (store, action) => {
       if (localStorage.getItem("tokenKey")) {
-        store.showModal = false;
+        storeSlice.caseReducers.changeModalVisibility(store);
         store.isAuthorized = true;
         store.customer = action.payload;
         store.isAdmin = action.payload.isAdmin;
@@ -152,11 +137,21 @@ export const storeSlice = createSlice({
     });
     builder
       .addCase(asyncSetPurchase.fulfilled, (store) => {
-        store.showModal = false;
+        storeSlice.caseReducers.changeModalVisibility(store);
         store.totalPrice = 0;
         store.cart.length = 0;
       })
+      .addCase(getPurchases.pending, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(getPurchases.fulfilled, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(asyncUserModification.pending, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
       .addCase(asyncUserModification.fulfilled, (store, action) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
         if (action.payload.customers) {
           const thisUser = action.payload.customers.find(
             (customer: ICustomer) => customer.id === store.customer.id
@@ -165,6 +160,12 @@ export const storeSlice = createSlice({
             storeSlice.caseReducers.signOutCustomer(store);
           }
         }
+      })
+      .addCase(asyncDeleteUser.pending, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(asyncDeleteUser.fulfilled, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
       });
   },
 });
@@ -172,7 +173,6 @@ export const storeSlice = createSlice({
 export const {
   signOutCustomer,
   changeModalVisibility,
-  getAllInstagramUsers,
   addOneToCart,
   removeOneFromCart,
   removeAllFromCart,

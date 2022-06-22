@@ -61,7 +61,7 @@ const asyncSetPurchase = createAsyncThunk(
   "store/asyncSetPurchase",
   async (newPurchase: IPurchase) => {
     try {
-      const response = await axios.post("/purchase", newPurchase);
+      const response = await axios.post("/purchases", newPurchase);
       return response.data;
     } catch (error) {
       console.log({ message: error });
