@@ -33,7 +33,7 @@ router
       console.log({ message: error });
     }
   })
-  .post(async (req, res) => {
+  .post(auth, async (req, res) => {
     try {
       const purchase = new Purchase(req.body);
       await purchase.save();

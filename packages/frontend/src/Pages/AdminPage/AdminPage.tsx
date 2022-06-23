@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { signOutCustomer } from "../../app/storeSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import Users from "../../components/Users/Users";
+import UsersList from "../../components/UsersList/UsersList";
 import Purchases from "../../components/Purchases/Purchases";
 import "./AdminPage.scss";
 
@@ -34,7 +34,7 @@ const AdminPage: React.FC = () => {
           Purchases
         </span>
       </div>
-      <section className="admin__data">{showUsers ? <Users /> : <Purchases />}</section>
+      <section className="admin__data">{showUsers ? <UsersList /> : <Purchases />}</section>
       <Button
         className="admin__button"
         variant="contained"

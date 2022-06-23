@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import { render, screen, cleanup, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RenderWrapper from "./helpers/RenderWrapper";
+import { storageKeys } from "../constants/storage-keys.constants";
 import Authorization from "../components/Authorization/Authorization";
 
 enum Logins {
@@ -45,7 +46,7 @@ describe("Authorization Page", () => {
       expect(alert).toBeInTheDocument();
     });
     await waitFor(() => {
-      expect(window.localStorage.getItem("tokenKey")).toBeTruthy();
+      expect(window.localStorage.getItem(storageKeys.TOKEN_KEY)).toBeTruthy();
     });
   });
 });

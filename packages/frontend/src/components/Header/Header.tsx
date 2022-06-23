@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import SearchIcon from "@mui/icons-material/Search";
+import { Toaster } from "react-hot-toast";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { useAppSelector } from "../../app/hooks";
 import logoURL from "../../images/Logo.svg";
@@ -11,11 +12,11 @@ import "./Header.scss";
 const Header: React.FC = () => {
   const { cart, isAuthorized, isAdmin } = useAppSelector((store) => store.data);
 
-  const getCartTotal = (() => {
+  const getCartTotal = useMemo(() => {
     let total = 0;
     cart.forEach((item) => (total = total + item.amount));
     return total;
-  })();
+  }, [cart]);
 
   return (
     <header className="app__header">
@@ -58,6 +59,7 @@ const Header: React.FC = () => {
           </Link>
         )}
       </div>
+      <Toaster />
     </header>
   );
 };

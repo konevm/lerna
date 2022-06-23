@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { getAllCustomers, asyncDeleteUser } from "../../app/trunks";
-import ModalsWrapper from "../../components/ModalWrapper/ModalsWrapper";
+import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
 import User from "../User/User";
-import "./Users.scss";
+import "./UsersList.scss";
 
-const Users: React.FC = () => {
+const UsersList: React.FC = () => {
   const { customers: users, errorMessage } = useAppSelector((store) => store.admin);
   const [deletedCustomerId, setDeletedCustomerId] = useState<string>("");
   const dispatch = useAppDispatch();
@@ -35,4 +35,4 @@ const Users: React.FC = () => {
   );
 };
 
-export default Users;
+export default UsersList;

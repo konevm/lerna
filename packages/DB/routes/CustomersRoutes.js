@@ -11,17 +11,18 @@ router.get("/authorization", async (req, res) => {
     const customer = await Customers.findOne({
       login: req.query.login,
     });
-    if (!customer) res.send("this user doesn't exsist");
+    if (!customer) res.status(404).send("this user doesn't exsist");
     if (customer) {
       const verify = bcrypt.compareSync(req.query.password, customer.password);
+      if (!verify) res.status(404).send("this password is invalid");
       if (verify) {
         const token = customer.token;
         res.send({ user: customer, token });
       }
-      res.send("this password is invalid");
     }
   } catch (error) {
-    res.send({ message: error });
+    console.log({ message: error });
+    res.status(404).send("something goes wrong wodth server");
   }
 });
 
@@ -46,6 +47,7 @@ router.post("/registration", async (req, res) => {
     }
   } catch (error) {
     console.log({ message: error });
+    res.status(404).send("something goes wrong wodth server");
   }
 });
 

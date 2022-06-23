@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
 import { ICustomer } from "../helpers/interfaces";
-import UserModification from "../UserModification/UserModification";
+import EditUserForm from "../EditUserForm/EditUserForm";
 import "./User.scss";
 
 interface IUserProps {
@@ -24,7 +24,7 @@ const User: React.FC<IUserProps> = ({ user, setDeletedCustomerId }) => {
       <span className="user__address">Corresponding address: {address}</span>
       <span className="user__phone">Phone: {phone}</span>
       {isChangeOpened && (
-        <UserModification
+        <EditUserForm
           user={user}
           setChangeOpened={setChangeOpened}
           setDeletedCustomerId={setDeletedCustomerId}

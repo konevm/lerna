@@ -11,14 +11,12 @@ interface ISortedProps {
 const Shop: React.FC<ISortedProps> = ({ isNew }) => {
   const products = useAppSelector((store) => store.data.products);
   const [sortMethod, setSortMethod] = useState<string>(() => (isNew ? "new" : "all"));
-  const onlyNew = products.filter((product) => product.new);
-  const onlySale = products.filter((product) => product.sale);
   const sortedProducts = (() => {
     switch (sortMethod) {
       case "new":
-        return onlyNew;
+        return products.filter((product) => product.new);
       case "sale":
-        return onlySale;
+        return products.filter((product) => product.sale);
       default:
         return products;
     }

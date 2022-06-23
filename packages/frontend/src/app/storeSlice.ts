@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { ICustomer, IState } from "../components/helpers/interfaces";
 import { Products } from "../components/helpers/products";
 import { payments } from "../components/helpers/payments";
+import { storageKeys } from "../constants/storage-keys.constants";
 import {
   getUsers,
   getPosts,
@@ -89,7 +91,7 @@ export const storeSlice = createSlice({
       store.isAuthorized = false;
       store.customer = InitialCustomer;
       store.isAdmin = false;
-      localStorage.removeItem("tokenKey");
+      localStorage.removeItem(storageKeys.TOKEN_KEY);
     },
     setRegisteredFalse: (store) => {
       store.registrationComplete = false;
@@ -112,17 +114,16 @@ export const storeSlice = createSlice({
     });
     builder.addCase(asyncSignInCustomer.pending, (store) => {
       store.errorMessage = "";
-      storeSlice.caseReducers.changeModalVisibility(store);
     });
     builder.addCase(asyncSignInCustomer.fulfilled, (store, action) => {
-      if (localStorage.getItem("tokenKey")) {
-        storeSlice.caseReducers.changeModalVisibility(store);
-        store.isAuthorized = true;
-        store.customer = action.payload;
-        store.isAdmin = action.payload.isAdmin;
-      } else {
-        store.errorMessage = action.payload;
+      if (action.payload.response) {
+        store.errorMessage = action.payload.response.data;
+        toast.error(action.payload.response.data);
+        return;
       }
+      store.isAuthorized = true;
+      store.customer = action.payload;
+      store.isAdmin = action.payload.isAdmin;
     });
     builder.addCase(asyncCreateCustomer.pending, (store) => {
       store.errorMessage = "";

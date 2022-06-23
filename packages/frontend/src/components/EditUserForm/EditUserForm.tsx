@@ -5,15 +5,15 @@ import { useAppDispatch } from "../../app/hooks";
 import { asyncUserModification } from "../../app/trunks";
 import { ICustomer } from "../helpers/interfaces";
 import { modificationSchema } from "../helpers/validationSchemas";
-import "./UserModification.scss";
+import "./EditUserForm.scss";
 
-interface IUserModificationProps {
+interface IEditUserFormProps {
   user: ICustomer;
   setChangeOpened: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletedCustomerId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const UserModification: React.FC<IUserModificationProps> = ({
+const EditUserForm: React.FC<IEditUserFormProps> = ({
   user,
   setChangeOpened,
   setDeletedCustomerId,
@@ -130,4 +130,4 @@ const UserModification: React.FC<IUserModificationProps> = ({
   );
 };
 
-export default UserModification;
+export default EditUserForm;

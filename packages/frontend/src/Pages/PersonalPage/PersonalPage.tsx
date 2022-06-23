@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { signOutCustomer } from "../../app/storeSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import AdminPage from "../AdminPage/AdminPage";
 import Purchases from "../../components/Purchases/Purchases";
 import "./PersonalPage.scss";
 
@@ -19,8 +18,8 @@ const PersonalPage: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthorized) navigate(AppRoutes.MAIN, { replace: true });
-  }, [navigate, isAuthorized]);
-  if (isAdmin) return <AdminPage />;
+    if (isAdmin) navigate(AppRoutes.ADMIN, { replace: true });
+  }, [navigate, isAuthorized, isAdmin]);
 
   return (
     <div className="app__personal">
