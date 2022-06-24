@@ -50,9 +50,15 @@ const Header: React.FC = () => {
           Products
         </Link>
         {isAuthorized ? (
-          <Link to={AppRoutes.ACCOUNT} className="header-menu__item">
-            {isAdmin ? "Admin" : "Personal"}
-          </Link>
+          isAdmin ? (
+            <Link to={AppRoutes.ADMIN} className="header-menu__item">
+              Admin
+            </Link>
+          ) : (
+            <Link to={AppRoutes.ACCOUNT} className="header-menu__item">
+              Personal
+            </Link>
+          )
         ) : (
           <Link to={AppRoutes.AUTH} className="header-menu__item">
             Sign in

@@ -11,15 +11,13 @@ const PersonalPage: React.FC = () => {
   const {
     customer: { name, lastName, email, address },
     isAuthorized,
-    isAdmin,
   } = useAppSelector((store) => store.data);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAuthorized) navigate(AppRoutes.MAIN, { replace: true });
-    if (isAdmin) navigate(AppRoutes.ADMIN, { replace: true });
-  }, [navigate, isAuthorized, isAdmin]);
+  }, [navigate, isAuthorized]);
 
   return (
     <div className="app__personal">

@@ -59,7 +59,7 @@ const auth = async (req, res, next) => {
     if (user.isAdmin) {
       next();
     } else res.status(403).send("Not admin");
-  }
+  } else res.status(401).send("Invalid token key.");
 };
 
 router

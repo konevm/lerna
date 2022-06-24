@@ -20,5 +20,9 @@
     "react-hot-toast": "^2.2.0",
     "testshop_db": "file:packages/DB",
     "ts-node": "^10.8.1"
+  },
+  "scripts": {
+    "start": "lerna run start --parallel"
+    
   }
 }

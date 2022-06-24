@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { changeModalVisibility } from "../../app/storeSlice";
 import { getAllCustomers, asyncDeleteUser } from "../../app/trunks";
 import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
 import User from "../User/User";
@@ -13,7 +14,8 @@ const UsersList: React.FC = () => {
 
   useEffect(() => {
     if (!users.length) dispatch(getAllCustomers());
-  }, [dispatch, users]);
+    if (deletedCustomerId) dispatch(changeModalVisibility());
+  }, [dispatch, users, deletedCustomerId]);
   return (
     <div className="app__customers">
       <ul className="customers__list">
@@ -23,10 +25,21 @@ const UsersList: React.FC = () => {
           ))}
       </ul>
       <ModalsWrapper>
-        {errorMessage ? <>{errorMessage}</> : <AutorenewIcon className="wait" data-testid="wait" />}
+        {errorMessage || deletedCustomerId ? (
+          <>{errorMessage}</>
+        ) : (
+          <AutorenewIcon className="wait" data-testid="wait" />
+        )}
         {deletedCustomerId && (
           <>
-            Are you shure? <button onClick={() => setDeletedCustomerId("")}>No</button>{" "}
+            Are you sure?{" "}
+            <button
+              onClick={() => {
+                dispatch(changeModalVisibility());
+                setDeletedCustomerId("");
+              }}>
+              No
+            </button>{" "}
             <button onClick={() => dispatch(asyncDeleteUser(deletedCustomerId))}>Yes</button>
           </>
         )}
