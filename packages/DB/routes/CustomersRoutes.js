@@ -22,7 +22,7 @@ router.get("/authorization", async (req, res) => {
     }
   } catch (error) {
     console.log({ message: error });
-    res.status(404).send("something goes wrong wodth server");
+    res.status(500).send("something goes wrong with server");
   }
 });
 
@@ -33,7 +33,7 @@ router.post("/registration", async (req, res) => {
     });
     const allCustomers = await Customers.find();
     if (customer) {
-      res.send({ status: false, message: "this login already exists" });
+      res.send({ registrationMessage: "this login already exists" });
     }
     if (!customer) {
       const customer = new Customers(req.body);
@@ -43,11 +43,11 @@ router.post("/registration", async (req, res) => {
       if (allCustomers.length === 0) customer.isAdmin = true;
       await customer.save();
       const customers = await Customers.find().sort({ login: 1, isAdmin: 1 });
-      res.send({ status: true, customers: customers });
+      res.send({ customers: customers });
     }
   } catch (error) {
     console.log({ message: error });
-    res.status(404).send("something goes wrong wodth server");
+    res.status(500).send("something goes wrong with server");
   }
 });
 
@@ -58,7 +58,7 @@ const auth = async (req, res, next) => {
     const user = await Customers.findOne({ _id: id._id });
     if (user.isAdmin) {
       next();
-    } else res.send("Not admin");
+    } else res.status(403).send("Not admin");
   }
 };
 
@@ -70,6 +70,7 @@ router
       res.send(customers);
     } catch (error) {
       console.log({ message: error });
+      res.status(500).send("something goes wrong with server");
     }
   })
   .post(auth, async (req, res) => {
@@ -81,6 +82,7 @@ router
       res.send({ customers: customers });
     } catch (error) {
       console.log({ message: error });
+      res.status(500).send("something goes wrong with server");
     }
   })
   .delete(auth, async (req, res) => {
@@ -91,6 +93,7 @@ router
       res.send(customers);
     } catch (error) {
       console.log({ message: error });
+      res.status(500).send("something goes wrong with server");
     }
   });
 

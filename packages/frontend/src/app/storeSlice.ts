@@ -98,10 +98,20 @@ export const storeSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    const isItErrorCheck = (payload: any, store: IState) => {
+      if (payload.response) {
+        store.errorMessage = payload.response.data;
+        toast.error(payload.response.data);
+        return true;
+      }
+      return false;
+    };
+
     builder.addCase(getAllCustomers.pending, (store) => {
       storeSlice.caseReducers.changeModalVisibility(store);
     });
     builder.addCase(getAllCustomers.fulfilled, (store, action) => {
+      isItErrorCheck(action.payload, store);
       if (action.payload[0].id) {
         storeSlice.caseReducers.changeModalVisibility(store);
       }
@@ -116,11 +126,7 @@ export const storeSlice = createSlice({
       store.errorMessage = "";
     });
     builder.addCase(asyncSignInCustomer.fulfilled, (store, action) => {
-      if (action.payload.response) {
-        store.errorMessage = action.payload.response.data;
-        toast.error(action.payload.response.data);
-        return;
-      }
+      if (isItErrorCheck(action.payload, store)) return;
       store.isAuthorized = true;
       store.customer = action.payload;
       store.isAdmin = action.payload.isAdmin;
@@ -129,15 +135,18 @@ export const storeSlice = createSlice({
       store.errorMessage = "";
     });
     builder.addCase(asyncCreateCustomer.fulfilled, (store, action) => {
-      if (!action.payload.status) {
-        store.errorMessage = action.payload.message;
+      if (isItErrorCheck(action.payload, store)) return;
+      if (action.payload.registrationMessage) {
+        store.errorMessage = action.payload.registrationMessage;
+        toast.error(action.payload.registrationMessage);
         return;
       }
       store.errorMessage = "";
       store.registrationComplete = true;
     });
     builder
-      .addCase(asyncSetPurchase.fulfilled, (store) => {
+      .addCase(asyncSetPurchase.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
         storeSlice.caseReducers.changeModalVisibility(store);
         store.totalPrice = 0;
         store.cart.length = 0;
@@ -145,13 +154,15 @@ export const storeSlice = createSlice({
       .addCase(getPurchases.pending, (store) => {
         storeSlice.caseReducers.changeModalVisibility(store);
       })
-      .addCase(getPurchases.fulfilled, (store) => {
+      .addCase(getPurchases.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
         storeSlice.caseReducers.changeModalVisibility(store);
       })
       .addCase(asyncUserModification.pending, (store) => {
         storeSlice.caseReducers.changeModalVisibility(store);
       })
       .addCase(asyncUserModification.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
         storeSlice.caseReducers.changeModalVisibility(store);
         if (action.payload.customers) {
           const thisUser = action.payload.customers.find(
@@ -165,7 +176,8 @@ export const storeSlice = createSlice({
       .addCase(asyncDeleteUser.pending, (store) => {
         storeSlice.caseReducers.changeModalVisibility(store);
       })
-      .addCase(asyncDeleteUser.fulfilled, (store) => {
+      .addCase(asyncDeleteUser.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
         storeSlice.caseReducers.changeModalVisibility(store);
       });
   },

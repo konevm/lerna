@@ -52,7 +52,7 @@ const asyncCreateCustomer = createAsyncThunk(
       const response = await axios.post(requestRoutes.CUSTOMER_REGISTRATION_ROUTE, customer);
       return response.data;
     } catch (error) {
-      console.log({ message: error });
+      return error;
     }
   }
 );
@@ -64,7 +64,7 @@ const asyncSetPurchase = createAsyncThunk(
       const response = await axios.post(requestRoutes.PURCHASES_ROUTE, newPurchase);
       return response.data;
     } catch (error) {
-      console.log({ message: error });
+      return error;
     }
   }
 );
@@ -74,7 +74,7 @@ const getAllCustomers = createAsyncThunk("admin/getAllCustomers", async () => {
     const response = await axios.get(requestRoutes.CUSTOMERS_ROUTE);
     return response.data;
   } catch (error) {
-    console.log({ message: error });
+    return error;
   }
 });
 
@@ -83,7 +83,7 @@ const getPurchases = createAsyncThunk("admin/getAllPurchases", async (id?: strin
     const response = await axios.get(requestRoutes.PURCHASES_ROUTE, { params: { id: id } });
     return response.data;
   } catch (error) {
-    console.log({ message: error });
+    return error;
   }
 });
 
@@ -94,7 +94,7 @@ const asyncUserModification = createAsyncThunk(
       const response = await axios.post(requestRoutes.CUSTOMERS_ROUTE, user);
       return response.data;
     } catch (error) {
-      console.log({ message: error });
+      return error;
     }
   }
 );
@@ -103,7 +103,7 @@ const asyncDeleteUser = createAsyncThunk("admin/asyncDeleteUser", async (id: str
     const response = await axios.delete(requestRoutes.CUSTOMERS_ROUTE, { params: { id: id } });
     return response.data;
   } catch (error) {
-    console.log({ message: error });
+    return error;
   }
 });
 

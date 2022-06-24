@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
     const user = await Customers.findOne({ _id: id._id });
     if (user.isAdmin || user.id === req.body.customerId || user.id === req.query.id) {
       next();
-    } else res.send("Not admin");
+    } else res.status(403).send("Not admin");
   }
 };
 router
@@ -31,6 +31,7 @@ router
       }
     } catch (error) {
       console.log({ message: error });
+      res.status(500).send("something goes wrong with server");
     }
   })
   .post(auth, async (req, res) => {
@@ -43,6 +44,7 @@ router
       }, 3000);
     } catch (error) {
       console.log({ message: error });
+      res.status(500).send("something goes wrong with server");
     }
   });
 
