@@ -27,7 +27,7 @@ function App() {
           {isAuthorized && (
             <>
               <Route path={AppRoutes.ADMIN} element={<AdminPage />} />
-              <Route path={AppRoutes.ACCOUNT} element={<PersonalPage />} />{" "}
+              <Route path={AppRoutes.ACCOUNT} element={<PersonalPage />} />
             </>
           )}
           <Route path="*" element={<Navigate to="/" />} />

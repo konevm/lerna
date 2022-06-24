@@ -10,14 +10,8 @@ import "./PersonalPage.scss";
 const PersonalPage: React.FC = () => {
   const {
     customer: { name, lastName, email, address },
-    isAuthorized,
   } = useAppSelector((store) => store.data);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthorized) navigate(AppRoutes.MAIN, { replace: true });
-  }, [navigate, isAuthorized]);
 
   return (
     <div className="app__personal">
