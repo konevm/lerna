@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import { TextField, Button } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { asyncCreateCustomer } from "../../app/storeSlice";
+import { asyncCreateCustomer } from "../../app/trunks";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { registrationSchema } from "../helpers/validationSchemas";
 import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
@@ -35,7 +35,7 @@ const Registration: React.FC = () => {
         }}
         validationSchema={registrationSchema}
         onSubmit={(values) => {
-          dispatch(asyncCreateCustomer({ ...values, id: ID }));
+          dispatch(asyncCreateCustomer({ ...values, id: ID, isAdmin: false }));
         }}>
         {({ handleChange, values, errors, isSubmitting }) => (
           <Form className="reg__form">

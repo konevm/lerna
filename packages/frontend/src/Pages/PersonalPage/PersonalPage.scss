@@ -1,0 +1,22 @@
+@use "../../styles/variables.scss";
+
+.app__personal {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.personal__title {
+  margin: 0;
+}
+.personal__email {
+  padding: 10px;
+}
+.personal__button.MuiButton-root {
+  margin-top: 20px;
+  background-color: variables.$brown;
+  &:hover {
+    background-color: variables.$sand;
+    color: black;
+  }
+}

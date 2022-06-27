@@ -8,3 +8,14 @@
   align-content: center;
   justify-items: center;
 }
+.app__products {
+  display: flex;
+  flex-direction: column;
+}
+
+.products__select {
+  &.MuiFormControl-root {
+    margin: 10px 40px;
+    align-self: flex-end;
+  }
+}

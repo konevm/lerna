@@ -1,9 +1,9 @@
 import React from "react";
-import { ICartItem } from "../helpers/interfaces";
-import { useAppDispatch } from "../../app/hooks";
-import { addOneToCart, removeOneFromCart } from "../../app/storeSlice";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { addOneToCart, removeOneFromCart } from "../../app/storeSlice";
+import { ICartItem } from "../helpers/interfaces";
+import { useAppDispatch } from "../../app/hooks";
 import "./CartItem.scss";
 
 interface IItemProps {

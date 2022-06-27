@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
+import { useGoogleLogin } from "@react-oauth/google";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { AppRoutes } from "../../constants/app-routes.constants";
 import { authorisationSchema } from "../helpers/validationSchemas";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { asyncSignInCustomer, setRegisteredFalse } from "../../app/storeSlice";
+import { setRegisteredFalse } from "../../app/storeSlice";
+import { asyncSignInCustomer } from "../../app/trunks";
 import ModalsWrapper from "../ModalWrapper/ModalsWrapper";
 import "./Authorization.scss";
 
@@ -16,6 +20,11 @@ const Authorization: React.FC = () => {
   );
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [showPassword, setShowPassword] = useState<boolean>(true);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     if (registrationComplete) dispatch(setRegisteredFalse());
@@ -24,6 +33,13 @@ const Authorization: React.FC = () => {
   useEffect(() => {
     if (isAuthorized) navigate(AppRoutes.MAIN);
   }, [isAuthorized, navigate]);
+
+  const loginWithGoogle = useGoogleLogin({
+    scope:
+      "email profile openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+    onSuccess: (Response) => console.log(Response),
+  });
+
   return (
     <div className="app__authorization">
       <Formik
@@ -50,13 +66,25 @@ const Authorization: React.FC = () => {
             <TextField
               label="Password"
               variant="outlined"
+              type={showPassword ? "password" : "text"}
               value={values.password}
               className="auth__password"
               name="password"
               error={!!errors.password}
               helperText={errors.password}
               onChange={handleChange}
-            />
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}></TextField>
             <Button
               className="form__button"
               variant="contained"
@@ -77,6 +105,14 @@ const Authorization: React.FC = () => {
         )}
       </Formik>
       <Link to={AppRoutes.REG}>Get Registered</Link>
+
+      <span
+        className="form_google"
+        onClick={() => {
+          loginWithGoogle();
+        }}>
+        Authorization by Google
+      </span>
     </div>
   );
 };

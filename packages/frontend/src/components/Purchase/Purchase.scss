@@ -1,0 +1,43 @@
+@use "../../styles/variables.scss";
+
+.purchase {
+  margin-top: 10px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  column-gap: 10px;
+  row-gap: 10px;
+  border-radius: 4px;
+  border: 1px solid variables.$brown;
+  align-items: center;
+}
+.purchase__id {
+  grid-column: 4;
+  margin: 0;
+}
+.purchase__customer {
+  grid-row: 1;
+  grid-column: 1;
+}
+.purchase__price {
+  grid-column: 4;
+}
+.purchase__address {
+  grid-row-start: 1;
+  grid-column: 2;
+  grid-row-end: 4;
+  align-self: center;
+}
+.purchase__phone {
+  grid-row: 2;
+  grid-column: 1;
+}
+.purchase__email {
+  grid-row: 3;
+  grid-column: 1;
+}
+.purchase__products {
+  grid-row-start: 1;
+  grid-row-end: 4;
+}

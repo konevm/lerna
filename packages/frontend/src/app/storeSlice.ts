@@ -1,89 +1,23 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import {
-  IUser,
-  ICustomer,
-  IAuthorizationCustomer,
-  IState,
-  IPurchase,
-} from "../components/helpers/interfaces";
+import toast from "react-hot-toast";
+import { ICustomer, IState } from "../components/helpers/interfaces";
 import { Products } from "../components/helpers/products";
-
+import { payments } from "../components/helpers/payments";
+import { storageKeys } from "../constants/storage-keys.constants";
 import {
-  gPay,
-  amexPay,
-  firstPay,
-  flashPay,
-  mastercardPay,
-  mPay,
-  ruPay,
-  springPay,
-  squarePay,
-  visaPay,
-} from "../components/helpers/payments";
+  getUsers,
+  getPosts,
+  asyncSetPurchase,
+  asyncCreateCustomer,
+  asyncSignInCustomer,
+  asyncUserModification,
+  asyncDeleteUser,
+  getAllCustomers,
+  getPurchases,
+} from "./trunks";
 
 axios.defaults.baseURL = "http://localhost:3001";
-
-export const getUsers = createAsyncThunk("store/getAllUsers", async () => {
-  const apiUrl = `https://reqres.in/api/users?page=1`;
-  try {
-    const fetchedData = await axios.get(apiUrl);
-    const users: IUser[] = [...fetchedData.data.data];
-    return users;
-  } catch (error) {
-    console.log(error);
-  }
-});
-export const getPosts = createAsyncThunk("store/getPost", async () => {
-  const apiUrl = `https://jsonplaceholder.typicode.com/posts`;
-  try {
-    const fetchedData = await axios.get(apiUrl);
-    const posts = [...fetchedData.data];
-    return posts;
-  } catch (error) {
-    console.log(error);
-  }
-});
-export const asyncSignInCustomer = createAsyncThunk(
-  "store/asyncSignInCustomer",
-  async (customer: IAuthorizationCustomer) => {
-    try {
-      const response = await axios.get("/authorization", { params: customer });
-      if (response.data.token) {
-        localStorage.setItem("tokenKey", response.data.token);
-        axios.defaults.headers.common["authorization"] = response.data.token;
-        return response.data.user;
-      }
-      return response.data;
-    } catch (error) {
-      console.log({ message: error });
-    }
-  }
-);
-export const asyncCreateCustomer = createAsyncThunk(
-  "store/asyncCreateCustomer",
-  async (customer: ICustomer) => {
-    try {
-      const response = await axios.post("/registration", customer);
-      return response.data;
-    } catch (error) {
-      console.log({ message: error });
-    }
-  }
-);
-
-export const asyncSetPurchase = createAsyncThunk(
-  "store/asyncSetPurchase",
-  async (newPurchase: IPurchase) => {
-    try {
-      const response = await axios.post("/purchase", newPurchase);
-      return response.data;
-    } catch (error) {
-      console.log({ message: error });
-    }
-  }
-);
 
 const InitialCustomer: ICustomer = {
   id: "",
@@ -94,23 +28,13 @@ const InitialCustomer: ICustomer = {
   password: "",
   address: "",
   phone: "",
+  isAdmin: false,
 };
 
 const initialState: IState = {
   showModal: false,
   menu: ["About Us", "Products", "Authorization"],
-  payments: [
-    firstPay,
-    amexPay,
-    flashPay,
-    gPay,
-    mastercardPay,
-    mPay,
-    springPay,
-    squarePay,
-    ruPay,
-    visaPay,
-  ],
+  payments: payments,
   benefits: [
     "GMO's",
     "Toxins",
@@ -125,6 +49,7 @@ const initialState: IState = {
   cart: [],
   totalPrice: 0,
   customer: InitialCustomer,
+  isAdmin: false,
   registrationComplete: false,
   isAuthorized: false,
   errorMessage: "",
@@ -136,9 +61,6 @@ export const storeSlice = createSlice({
   reducers: {
     changeModalVisibility: (store) => {
       store.showModal = !store.showModal;
-    },
-    getAllInstagramUsers: (store, action: PayloadAction<IUser[]>) => {
-      store.instagramUsers = action.payload;
     },
     addOneToCart: (store, action: PayloadAction<number>) => {
       const productByActionNumber = Products.find((item) => item.id === action.payload);
@@ -168,13 +90,33 @@ export const storeSlice = createSlice({
     signOutCustomer: (store) => {
       store.isAuthorized = false;
       store.customer = InitialCustomer;
-      localStorage.removeItem("tokenKey");
+      store.isAdmin = false;
+      localStorage.removeItem(storageKeys.TOKEN_KEY);
+      store.cart.length = 0;
     },
     setRegisteredFalse: (store) => {
       store.registrationComplete = false;
     },
   },
   extraReducers: (builder) => {
+    const isItErrorCheck = (payload: any, store: IState) => {
+      if (payload.response) {
+        store.errorMessage = payload.response.data;
+        toast.error(payload.response.data);
+        return true;
+      }
+      return false;
+    };
+
+    builder.addCase(getAllCustomers.pending, (store) => {
+      storeSlice.caseReducers.changeModalVisibility(store);
+    });
+    builder.addCase(getAllCustomers.fulfilled, (store, action) => {
+      isItErrorCheck(action.payload, store);
+      if (action.payload[0].id) {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      }
+    });
     builder.addCase(getUsers.fulfilled, (store, action) => {
       if (action.payload) store.instagramUsers = action.payload;
     });
@@ -183,40 +125,69 @@ export const storeSlice = createSlice({
     });
     builder.addCase(asyncSignInCustomer.pending, (store) => {
       store.errorMessage = "";
-      store.showModal = true;
     });
     builder.addCase(asyncSignInCustomer.fulfilled, (store, action) => {
-      if (localStorage.getItem("tokenKey")) {
-        store.showModal = false;
-        store.isAuthorized = true;
-        store.customer = action.payload;
-      } else {
-        store.errorMessage = action.payload;
-      }
+      if (isItErrorCheck(action.payload, store)) return;
+      store.isAuthorized = true;
+      store.customer = action.payload;
+      store.isAdmin = action.payload.isAdmin;
     });
     builder.addCase(asyncCreateCustomer.pending, (store) => {
       store.errorMessage = "";
     });
     builder.addCase(asyncCreateCustomer.fulfilled, (store, action) => {
-      if (!action.payload.status) {
-        store.errorMessage = action.payload.message;
+      if (isItErrorCheck(action.payload, store)) return;
+      if (!action.payload.customers) {
+        store.errorMessage = action.payload.registrationMessage;
+        toast.error(action.payload.registrationMessage);
         return;
       }
       store.errorMessage = "";
       store.registrationComplete = true;
+      toast.success(action.payload.registrationMessage);
     });
-    builder.addCase(asyncSetPurchase.fulfilled, (store) => {
-      store.showModal = false;
-      store.totalPrice = 0;
-      store.cart.length = 0;
-    });
+    builder
+      .addCase(asyncSetPurchase.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
+        storeSlice.caseReducers.changeModalVisibility(store);
+        store.totalPrice = 0;
+        store.cart.length = 0;
+      })
+      .addCase(getPurchases.pending, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(getPurchases.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(asyncUserModification.pending, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(asyncUserModification.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
+        storeSlice.caseReducers.changeModalVisibility(store);
+        if (action.payload.customers) {
+          const thisUser = action.payload.customers.find(
+            (customer: ICustomer) => customer.id === store.customer.id
+          );
+          if (!thisUser.isAdmin) {
+            storeSlice.caseReducers.signOutCustomer(store);
+          }
+        }
+      })
+      .addCase(asyncDeleteUser.pending, (store) => {
+        storeSlice.caseReducers.changeModalVisibility(store);
+      })
+      .addCase(asyncDeleteUser.fulfilled, (store, action) => {
+        if (isItErrorCheck(action.payload, store)) return;
+        storeSlice.caseReducers.changeModalVisibility(store);
+      });
   },
 });
 
 export const {
   signOutCustomer,
   changeModalVisibility,
-  getAllInstagramUsers,
   addOneToCart,
   removeOneFromCart,
   removeAllFromCart,

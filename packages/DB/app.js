@@ -4,16 +4,16 @@ const cors = require("cors");
 const CustomersRoute = require("./routes/CustomersRoutes");
 const PurchaseRoute = require("./routes/PurchaseRoutes");
 
-const index = express();
+const app = express();
 const port = 3001;
 const url = "mongodb://localhost:27017/shop";
 
-index.use(cors());
-index.use(express.json());
+app.use(cors());
+app.use(express.json());
 
-index.use("/", CustomersRoute);
-index.use("/", PurchaseRoute);
+app.use("/", CustomersRoute);
+app.use("/", PurchaseRoute);
 
-index.listen(port);
+app.listen(port);
 
 mongoose.connect(url, () => console.log("connected"));

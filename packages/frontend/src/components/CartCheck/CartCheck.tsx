@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { removeAllFromCart, changeModalVisibility, asyncSetPurchase } from "../../app/storeSlice";
+import { removeAllFromCart, changeModalVisibility } from "../../app/storeSlice";
+import { asyncSetPurchase } from "../../app/trunks";
 import { IPurchaseProduct } from "../helpers/interfaces";
 import "./CartCheck.scss";
 
 const CartCheck: React.FC = () => {
   const { customer, cart, totalPrice } = useAppSelector((store) => store.data);
-  const { name, lastName, address, phone, email } = customer;
+  const { name, lastName, address, phone, email, id } = customer;
   const [newPurchase, setNewPurchase] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const products: IPurchaseProduct[] = [];
@@ -20,7 +21,7 @@ const CartCheck: React.FC = () => {
     });
   });
   return (
-    <div className="app__check">
+    <div className={newPurchase ? "app__check" : "app__wait"}>
       {newPurchase ? (
         <>
           <h2 className="check__customer">
@@ -44,6 +45,7 @@ const CartCheck: React.FC = () => {
               dispatch(
                 asyncSetPurchase({
                   id: Number(new Date()).toString(),
+                  customerId: id,
                   name: name,
                   lastName: lastName,
                   email: email,

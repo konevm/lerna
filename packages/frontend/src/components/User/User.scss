@@ -1,0 +1,38 @@
+@use "../../styles/variables.scss";
+
+.user {
+  margin-top: 5px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid variables.$brown;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 10px;
+  column-gap: 10px;
+  justify-items: center;
+}
+.user__login {
+  margin: 0;
+  grid-column-start: 5;
+}
+
+.user__name {
+  grid-row-start: 1;
+}
+.user__last-name {
+  grid-row-start: 1;
+  grid-column-start: 2;
+}
+.user__address {
+  grid-column-start: 4;
+  grid-column-end: 6;
+  justify-self: end;
+}
+.user__phone {
+  grid-row-start: 2;
+  grid-column-start: 2;
+}
+.admin {
+  border-color: red;
+}
