@@ -43,7 +43,7 @@ router.post("/registration", async (req, res) => {
       if (allCustomers.length === 0) customer.isAdmin = true;
       await customer.save();
       const customers = await Customers.find().sort({ login: 1, isAdmin: 1 });
-      res.send({ customers: customers });
+      res.send({ registrationMessage: "registration complete", customers: customers });
     }
   } catch (error) {
     console.log({ message: error });

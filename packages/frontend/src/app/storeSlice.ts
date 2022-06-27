@@ -92,6 +92,7 @@ export const storeSlice = createSlice({
       store.customer = InitialCustomer;
       store.isAdmin = false;
       localStorage.removeItem(storageKeys.TOKEN_KEY);
+      store.cart.length = 0;
     },
     setRegisteredFalse: (store) => {
       store.registrationComplete = false;
@@ -136,13 +137,14 @@ export const storeSlice = createSlice({
     });
     builder.addCase(asyncCreateCustomer.fulfilled, (store, action) => {
       if (isItErrorCheck(action.payload, store)) return;
-      if (action.payload.registrationMessage) {
+      if (!action.payload.customers) {
         store.errorMessage = action.payload.registrationMessage;
         toast.error(action.payload.registrationMessage);
         return;
       }
       store.errorMessage = "";
       store.registrationComplete = true;
+      toast.success(action.payload.registrationMessage);
     });
     builder
       .addCase(asyncSetPurchase.fulfilled, (store, action) => {

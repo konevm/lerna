@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { Button } from "@mui/material";
-import { AppRoutes } from "../../constants/app-routes.constants";
 import { signOutCustomer } from "../../app/storeSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import Purchases from "../../components/Purchases/Purchases";
